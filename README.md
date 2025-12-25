@@ -56,12 +56,12 @@ SDKs, reference apps, and clear OpenAPI contracts make adoption frictionless.
 
 Service	Description
 
-auth-service	Identity, OAuth2/OIDC, JWT, RBAC/ABAC, multi-tenant
-tenant-service	Tenant lifecycle management, plan metadata, feature flags
-notification-service	Email, SMS, webhooks, template-driven, provider-agnostic
-workflow-service	State machine engine for async and human workflows
-audit-log-service	Append-only logs, queryable by tenant/entity, compliance-ready
-file-service	Object metadata storage with S3/GCS adapter support
+- [auth-service](github.com/Austin-rgb/auth_service)	Identity, OAuth2/OIDC, JWT, RBAC/ABAC, multi-tenant
+- tenant-service	Tenant lifecycle management, plan metadata, feature flags
+- notification-service	Email, SMS, webhooks, template-driven, provider-agnostic
+- workflow-service	State machine engine for async and human workflows
+- audit-log-service	Append-only logs, queryable by tenant/entity, compliance-ready
+- file-service	Object metadata storage with S3/GCS adapter support
 
 
 > More services coming: analytics, reporting, policy engine, integration connectors.
