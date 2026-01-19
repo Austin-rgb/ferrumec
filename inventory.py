@@ -25,7 +25,7 @@ class ReleaseException(Exception):
 class InventoryUser(AbstractUser):
     def __init__(self, user: User):  # user: User) -> None:
         super().__init__(user)
-        self.BASE_URL = "http://localhost:8081"
+        self.BASE_URL += "/inventory"
 
     def post_item(self, id, sku, quantity):
         res = self.session.post(
