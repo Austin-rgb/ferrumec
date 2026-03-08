@@ -1,23 +1,25 @@
 from json import loads
 from threading import Thread
-from time import sleep
+from time import sleep, time
 import websocket
-from auth import User
+from auth import User, requests
 from ferrumec import AbstractUser
+
+SENT_AT = 0
+RECEIVED_AFTER = 0
 
 
 class MessagesUser(AbstractUser):
     def __init__(self, user: User) -> None:
         super().__init__(user)
-        self.BASE_URL = "http://localhost/messages"
-        self.BUS_URL = "ws://localhost:8082"
+        self.BASE_URL = "http://localhost:8080/messages"
+        self.BUS_URL = "ws://localhost:8080/messages"
 
     def create_conversation(self, participants):
         r = self.session.post(
             f"{self.BASE_URL}/conversations",
             json={"participants": participants},
         )
-        print(r.status_code, r.content)
         if r.ok:
             return (r.json())["name"]
 
@@ -28,6 +30,18 @@ class MessagesUser(AbstractUser):
             f"{self.BASE_URL}/conversations/{conv}/messages",
             json={"text": text},
         )
+    @staticmethod
+    def get_userid(username):
+        res = requests.get(f"http://localhost:8080/auth/user_id/username/{username}")
+        return res.content.decode()
+
+    def send_pmessage(self, peer, text):
+        peer = MessagesUser.get_userid(peer)
+        print('peer-userid',peer)
+        self.post(f"/inbox/{peer}/messages", json={"text": text})
+
+    def fetch_inbox(self):
+        return self.get("/inbox/messages")
 
     def fetch_messages(self, conv):
         with self.session.get(
@@ -48,13 +62,24 @@ class MessagesUser(AbstractUser):
         def on_connect(ws):
             print("connected", self.user.username)
 
+        print("trying to connect ws")
         ws = websocket.WebSocketApp(
             f"{self.BUS_URL}/ws/",
             header={"Authorization": f"Bearer {self.user.access}"},
             on_message=on_message,
             on_open=on_connect,
+            on_error=print,
         )
-        ws.run_forever()
+        th = Thread(target=ws.run_forever)
+        th.start()
+
+
+def p2p_latency(msg):
+    global RECEIVED_AFTER
+    now = time()
+    RECEIVED_AFTER = now - SENT_AT
+    print(msg)
+    print(f"p2p latency:{RECEIVED_AFTER*1000}ms")
 
 
 if __name__ == "__main__":
@@ -63,9 +88,13 @@ if __name__ == "__main__":
 
     messanger = MessagesUser(user)
     messanger2 = MessagesUser(user2)
-    Thread(target=messanger2.ws_client, args=(print,)).start()
-    conv = messanger.create_conversation([user2.username])
-    messanger.send_message(conv, "Hi there")
+    messanger2.ws_client(
+        p2p_latency,
+    )
+    SENT_AT = time()
+    messanger.send_pmessage("bob", "Hi there")
     sleep(2)
-    msgs = messanger.fetch_messages(conv)
+    msgs = messanger2.fetch_inbox()
+    receipts = messanger.fetch_receipts(msgs[0]["id"])
     print(msgs)
+    print(receipts)

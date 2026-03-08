@@ -23,16 +23,14 @@ class CatalogUser(AbstractUser):
         return res.json()
 
     def get_product(self, product: int):
-        res = self.get(f"/products/{product}")
-        return res.json()
+        return self.get(f"/products/{product}")
 
     def get_by_slug(self, slug: str):
         res = self.get(f"/products/slug/{slug}")
         return res.json()
 
     def get_products(self, query: dict):
-        res = self.get("/products", params=query)
-        return res.json()
+        return self.get("/products", params=query)
 
 
 if __name__ == "__main__":
@@ -41,7 +39,7 @@ if __name__ == "__main__":
     product = Product("new product", "my very new product", 123, "new")
     post = user.post_product(product)
     print(post)
-    get = user.get_product(post["id"])
-    get = user.get_by_slug(post["slug"])
+    get = user.get_product(post["id"])  # type: ignore
+    get = user.get_by_slug(post["slug"])  # type: ignore
     products = user.get_products({})
     print("products", products)

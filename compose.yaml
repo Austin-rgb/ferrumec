@@ -1,0 +1,6 @@
+services:
+  ferrumec:
+    image: ferrumec
+    build:
+      context: .
+      dockerfile: ./Dockerfile
