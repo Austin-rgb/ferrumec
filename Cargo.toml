@@ -7,3 +7,5 @@ edition = "2024"
 async-trait = "0.1.89"
 libsigners = {path="../libsigners"}
 serde = "1.0.228"
+sqlx = { version = "0.8.6", default-features = false, features = ["any", "sqlite"] }
+event-stream = {path="../event-stream"}

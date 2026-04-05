@@ -1,7 +1,8 @@
 mod permissions;
 pub use async_trait::async_trait;
 use serde::Deserialize;
-
+mod deps;
+pub mod di;
 #[async_trait]
 pub trait OnCreateHandler: Send + Sync {
     type Dto;

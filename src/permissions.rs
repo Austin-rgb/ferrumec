@@ -1,6 +1,7 @@
 use libsigners::Claims;
+use serde::Serialize;
 
-#[derive(Clone)]
+#[derive(Clone, Serialize)]
 pub struct Permission {
     pub namespace: String,
     pub name: String,
