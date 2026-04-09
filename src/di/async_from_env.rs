@@ -31,3 +31,16 @@ impl<A: AsyncFromEnv, B: AsyncFromEnv, C: AsyncFromEnv> AsyncFromEnvTuple for (A
         ))
     }
 }
+
+impl<A: AsyncFromEnv, B: AsyncFromEnv, C: AsyncFromEnv, D: AsyncFromEnv> AsyncFromEnvTuple
+    for (A, B, C, D)
+{
+    async fn from_env_tuple(ctx: &EnvContext) -> Result<Self, EnvError> {
+        Ok((
+            A::from_env(ctx).await?,
+            B::from_env(ctx).await?,
+            C::from_env(ctx).await?,
+            D::from_env(ctx).await?,
+        ))
+    }
+}

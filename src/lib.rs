@@ -1,7 +1,7 @@
 mod permissions;
 pub use async_trait::async_trait;
-use serde::Deserialize;
-mod deps;
+use serde::{Deserialize, Serialize};
+pub mod deps;
 pub mod di;
 #[async_trait]
 pub trait OnCreateHandler: Send + Sync {
@@ -9,7 +9,7 @@ pub trait OnCreateHandler: Send + Sync {
     async fn handle(&self, dto: Self::Dto) -> bool;
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 pub struct CreateItem {
     pub name: String,
     pub id: String,
