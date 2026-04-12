@@ -1,8 +1,7 @@
 use std::sync::Arc;
 
-use libsigners::{HS256Signer, RS256Signer, Sign};
-
-use crate::di::AsyncFromEnv;
+use crate::crypto::{HS256Signer, RS256Signer, Sign};
+use crate::di::{AsyncFromEnv, EnvError};
 
 impl AsyncFromEnv for Arc<dyn Sign> {
     async fn from_env(ctx: &crate::di::EnvContext) -> Result<Self, crate::di::EnvError> {
@@ -15,7 +14,9 @@ impl AsyncFromEnv for Arc<dyn Sign> {
                 ctx.get("sign.private_key")?.to_string(),
                 ctx.get("sign.aud")?.to_string(),
             )) as Arc<dyn Sign>),
-            _ => unreachable!("unknown signer type: {}", signer_type),
+            _ => Err(EnvError::new(format!(
+                "Unsupported sign.type value: {signer_type}"
+            ))),
         }
     }
 }

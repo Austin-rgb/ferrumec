@@ -1,4 +1,4 @@
-use libsigners::Claims;
+use crate::crypto::Claims;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Serialize, Deserialize)]
