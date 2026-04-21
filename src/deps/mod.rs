@@ -1,4 +1,5 @@
 mod database;
+mod email;
 mod es;
 mod perms;
 mod sign;

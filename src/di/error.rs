@@ -6,11 +6,17 @@ pub struct EnvError {
 
 impl EnvError {
     pub fn new(c: impl Into<String>) -> Self {
-        Self { context: c.into(), source: None }
+        Self {
+            context: c.into(),
+            source: None,
+        }
     }
 
     pub fn with_source(c: impl Into<String>, s: impl Into<String>) -> Self {
-        Self { context: c.into(), source: Some(s.into()) }
+        Self {
+            context: c.into(),
+            source: Some(s.into()),
+        }
     }
 }
 

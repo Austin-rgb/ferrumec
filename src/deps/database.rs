@@ -1,4 +1,4 @@
-use crate::di::{AsyncFromEnv, EnvContext, EnvError, FromEnv};
+use crate::di::{AsyncFromEnv, EnvContext, EnvError};
 use sqlx::{Error, Pool, Sqlite, SqlitePool};
 
 impl From<Error> for EnvError {
