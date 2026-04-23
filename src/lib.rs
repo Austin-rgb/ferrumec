@@ -2,7 +2,7 @@
 mod permissions;
 pub use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
-pub mod crypto;
+
 pub mod deps;
 pub mod di;
 pub mod middleware;

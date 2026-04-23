@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use crate::crypto::{HS256Signer, RS256Validator, Validate};
+use libsigners::{HS256Signer, RS256Validator, Validate};
 use crate::di::{AsyncFromEnv, EnvError};
 
 impl AsyncFromEnv for Arc<dyn Validate> {

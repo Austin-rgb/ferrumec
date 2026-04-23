@@ -8,17 +8,14 @@ async-trait = "0.1.89"
 serde = "1.0.228"
 sqlx = { version = "0.8.6", default-features = false, features = ["any", "sqlite"] }
 event-stream = {git="https://github.com/Austin-rgb/event-stream"}
-jsonwebtoken = "10.3.0"
 anyhow = "1.0.102"
-uuid = { version = "1.23.0", features = ["v4"] }
-chrono = "0.4.44"
 actix-web = "4.13.0"
 futures-util = "0.3.32"
-reqwest = { version = "0.13.2", features = ["json"] }
-serde_json = "1.0.149"
 emailgrid = {git= "https://github.com/Austin-rgb/emailgrid", optional=true}
+libsigners = {path="../libsigners"}
 
 [patch."https://github.com/Austin-rgb/emailgrid"]
+
 emailgrid = { path = "../emailgrid" }
 
 [features]
