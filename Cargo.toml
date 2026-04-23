@@ -12,7 +12,10 @@ anyhow = "1.0.102"
 actix-web = "4.13.0"
 futures-util = "0.3.32"
 emailgrid = {git= "https://github.com/Austin-rgb/emailgrid", optional=true}
-libsigners = {path="../libsigners"}
+libsigners={git="https://github.com/Austin-rgb/libsigners"}
+
+#[patch."https://github.com/Austin-rgb/libsigners"]
+#libsigners = {path="../libsigners"}
 
 [patch."https://github.com/Austin-rgb/emailgrid"]
 

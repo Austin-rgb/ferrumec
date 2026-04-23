@@ -1,10 +1,7 @@
-mod database;
+pub mod database;
 #[cfg(feature = "email")]
-mod email;
-mod es;
-mod perms;
-
-mod sign;
-
-mod signers;
+pub mod email;
+pub mod es;
+pub mod perms;
+pub mod signers;
 pub use perms::Permissions;
