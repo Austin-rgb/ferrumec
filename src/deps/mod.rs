@@ -1,4 +1,5 @@
 mod database;
+#[cfg(feature = "email")]
 mod email;
 mod es;
 mod perms;
