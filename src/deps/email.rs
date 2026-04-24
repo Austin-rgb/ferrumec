@@ -1,5 +1,5 @@
 use crate::di::{AsyncFromEnv, EnvError};
-use emailgrid::{Brevo, Resend, Sender, EmailingContext, EmailAddress};
+pub use emailgrid::{Brevo, Resend, Sender, EmailingContext, EmailAddress};
 use std::sync::Arc;
 use sqlx::{Pool, Sqlite};
 impl AsyncFromEnv for Arc<dyn Sender + Send + Sync> {
