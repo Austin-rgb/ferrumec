@@ -2,10 +2,10 @@
 mod permissions;
 pub use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
-
+#[cfg(feature="cache")]
+pub mod cache;
 pub mod deps;
 pub mod di;
-pub mod middleware;
 #[async_trait]
 pub trait OnCreateHandler: Send + Sync {
     type Dto;

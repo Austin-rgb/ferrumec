@@ -9,11 +9,12 @@ serde = "1.0.228"
 sqlx = { version = "0.8.6", default-features = false, features = ["any", "sqlite"] }
 event-stream = {git="https://github.com/Austin-rgb/event-stream"}
 anyhow = "1.0.102"
-actix-web = "4.13.0"
 futures-util = "0.3.32"
 emailgrid = {git= "https://github.com/Austin-rgb/emailgrid", optional=true}
 libsigners={git="https://github.com/Austin-rgb/libsigners"}
-
+serde_json={version="1", optional = true}
+redis       = { version = "0.27", features = ["tokio-comp", "connection-manager"], optional=true}
+moka        = { version = "0.12", features = ["future"] , optional=true}
 #[patch."https://github.com/Austin-rgb/libsigners"]
 #libsigners = {path="../libsigners"}
 
@@ -23,3 +24,4 @@ emailgrid = { path = "../emailgrid" }
 
 [features]
 email = ["emailgrid"]
+cache = ["redis", "serde_json", "moka"]
