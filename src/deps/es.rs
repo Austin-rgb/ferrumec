@@ -11,3 +11,4 @@ impl AsyncFromEnv for Arc<dyn EventStream> {
         Ok(Arc::new(stream))
     }
 }
+

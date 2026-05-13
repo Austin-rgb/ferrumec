@@ -57,3 +57,14 @@ where
         self(args.0, args.1, args.2, args.3)
     }
 }
+
+
+impl<F, A, B, C, D, E, R> Handler<(A, B, C, D, E)> for F
+where
+    F: FnOnce(A, B, C, D,E) -> R,
+{
+    type Output = R;
+    fn call(self, args: (A, B, C, D, E)) -> R {
+        self(args.0, args.1, args.2, args.3, args.4)
+    }
+}

@@ -27,3 +27,9 @@ impl<A: FromEnv, B: FromEnv, C: FromEnv> FromEnvTuple for (A, B, C) {
         Ok((A::from_env(ctx)?, B::from_env(ctx)?, C::from_env(ctx)?))
     }
 }
+
+impl<A: FromEnv, B: FromEnv, C: FromEnv, D: FromEnv> FromEnvTuple for (A, B, C, D) {
+    fn from_env_tuple(ctx: &EnvContext) -> Result<Self, EnvError> {
+        Ok((A::from_env(ctx)?, B::from_env(ctx)?, C::from_env(ctx)?, D::from_env(ctx)?))
+    }
+}

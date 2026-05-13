@@ -3,5 +3,4 @@ pub mod database;
 pub mod email;
 pub mod es;
 pub mod perms;
-pub mod signers;
 pub use perms::Permissions;
