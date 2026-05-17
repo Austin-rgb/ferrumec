@@ -55,6 +55,10 @@ class MessagesUser(AbstractUser):
         ) as r:
             return r.json()
 
+class NotificationsUser(AbstractUser):
+    def __init__(self):
+        self.BASE_URL += "/notifications"
+
     def ws_client(self, handler):
         def on_message(ws, message):
             handler(loads(message))

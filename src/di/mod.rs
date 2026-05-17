@@ -1,12 +1,10 @@
-mod async_from_env;
 mod context;
 mod error;
-mod from_env;
 mod handler;
 mod macros;
 mod runner;
-mod tuple;
-pub use runner::{run_async as inject};
-pub use error::EnvError;
+mod simple;
 pub use context::EnvContext;
-pub use from_env::AsyncFromEnv;
+pub use error::EnvError;
+pub use runner::run_async as inject;
+pub use simple::AsyncFrom;

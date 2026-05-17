@@ -1,4 +1,4 @@
-use crate::di::{AsyncFromEnv, EnvContext, EnvError};
+use crate::di::{AsyncFrom, EnvContext, EnvError};
 use sqlx::{Error, Pool, Sqlite, SqlitePool};
 
 impl From<Error> for EnvError {
@@ -7,8 +7,8 @@ impl From<Error> for EnvError {
     }
 }
 
-impl AsyncFromEnv for Pool<Sqlite> {
-    async fn from_env(ctx: &EnvContext) -> Result<Self, EnvError> {
+impl AsyncFrom<EnvContext, EnvError> for Pool<Sqlite> {
+    async fn async_from(ctx: &EnvContext) -> Result<Self, EnvError> {
         let url = ctx.get("DATABASE_URL")?;
         Ok(SqlitePool::connect(url).await?)
     }

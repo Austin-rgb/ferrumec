@@ -28,7 +28,7 @@ class Availability:
 class BookingUser(AbstractUser):
     def __init__(self, user: User) -> None:
         super().__init__(user)
-        self.BASE_URL += ":8080"
+        self.BASE_URL += "/booking"
 
     def post_bookable(self, bookable: Bookable):
         res = self.post("/bookables", json=bookable.__dict__)

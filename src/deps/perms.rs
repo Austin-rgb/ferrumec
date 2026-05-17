@@ -1,9 +1,9 @@
-use crate::di::{AsyncFromEnv, EnvContext, EnvError};
+use crate::di::{AsyncFrom, EnvContext, EnvError};
 
 pub struct Permissions(pub String);
 
-impl AsyncFromEnv for Permissions {
-    async fn from_env(ctx: &EnvContext) -> Result<Self, EnvError> {
+impl AsyncFrom<EnvContext, EnvError> for Permissions {
+    async fn async_from(ctx: &EnvContext) -> Result<Self, EnvError> {
         let perms = ctx.get("PERMISSIONS")?;
         Ok(Self(perms.to_owned()))
     }
