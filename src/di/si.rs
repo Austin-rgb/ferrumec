@@ -1,5 +1,5 @@
 pub trait AsyncFrom<T, E>: Sized {
-    async fn async_from(v: &T) -> Result<Self, E>;
+    fn async_from(v: &T) -> impl std::future::Future<Output = Result<Self, E>>;
 }
 
 mod private {
@@ -23,7 +23,6 @@ macro_rules! taf {
     };
 }
 
-
 macro_rules! impl_handler {
     () => {
         impl<F, R> Handler<()> for F
@@ -31,27 +30,35 @@ macro_rules! impl_handler {
             F: FnOnce() -> R,
         {
             type Output = R;
-            fn call(self, args: ()) -> R {
+
+            fn call(self, _: ()) -> R {
                 self()
             }
         }
     };
-    ($A:ident $(, $As:ident)*) => {
-        impl_handler!($($As),*);
-        impl<F, $A, $($As,)* R> Handler<($A, $($As,)*)> for F
+
+    ($($T:ident),+ $(,)?) => {
+        impl<F, $($T,)+ R> Handler<($($T,)+)> for F
         where
-            F: FnOnce($A, $($As),*) -> R,
+            F: FnOnce($($T),+) -> R,
         {
             type Output = R;
-            fn call(self, args: ($A, $($As,)*)) -> R {
-                let ($A, $($As),*) = args;
-                self($A, $($As),*)
+
+            #[allow(non_snake_case)]
+            fn call(self, args: ($($T,)+)) -> R {
+                let ($($T,)+) = args;
+                self($($T),+)
             }
         }
     };
 }
 
-impl_handler!(A, B, C, D, E, G, H, I, J);
+impl_handler!();
+impl_handler!(A);
+impl_handler!(A, B);
+impl_handler!(A, B, C);
+impl_handler!(A, B, C, D);
+impl_handler!(A, B, C, D, E);
 
 // Add more as needed
 
@@ -61,12 +68,23 @@ taf!(T1, T2, T3);
 taf!(T1, T2);
 taf!(T1);
 
-pub async fn inject<F, Args, T, E>(f: F, ctx: T) -> Result<F::Output, E>
+pub async fn inject<F, Args, T, E>(f: F, ctx: &T) -> Result<F::Output, E>
 where
     F: Handler<Args>,
     Args: AsyncFrom<T, E>,
 {
-    let args = Args::async_from(&ctx).await?;
+    let args = Args::async_from(ctx).await?;
     Ok(f.call(args))
 }
 
+pub trait Inject {
+    type Error;
+    async fn inject<F, Args>(&self, f: F) -> Result<F::Output, Self::Error>
+    where
+        F: Handler<Args>,
+        Args: AsyncFrom<Self, Self::Error>,
+        Self: Sized,
+    {
+        inject(f, self).await
+    }
+}
