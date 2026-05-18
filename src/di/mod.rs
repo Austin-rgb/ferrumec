@@ -1,10 +1,7 @@
 mod context;
 mod error;
-mod handler;
-mod macros;
-mod runner;
-mod simple;
+mod si;
 pub use context::EnvContext;
 pub use error::EnvError;
-pub use runner::run_async as inject;
-pub use simple::AsyncFrom;
+pub use si::AsyncFrom;
+pub use si::inject;
