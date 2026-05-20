@@ -79,12 +79,12 @@ where
 
 pub trait Inject {
     type Error;
-    async fn inject<F, Args>(&self, f: F) -> Result<F::Output, Self::Error>
+    fn inject<F, Args>(&self, f: F) -> impl Future<Output = Result<F::Output, Self::Error>>
     where
         F: Handler<Args>,
         Args: AsyncFrom<Self, Self::Error>,
         Self: Sized,
     {
-        inject(f, self).await
+        async { inject(f, self).await }
     }
 }
